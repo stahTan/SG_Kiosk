@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Ingredient</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css"
+	th:href="@{/css/mycss.css}" />
+<style>
+</style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 class="navbar-brand">Add Ingredient</h1>
+			</div>
+			<button class="navbar-toggle" data-toggle="collapse"
+				data-target=".navHeaderCollapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<div class="collapse navbar-collapse navHeaderCollapse">
+				<ul class="nav navbar-nav navbar-right text-center">
+					<li><a href="/secure/index">Admin Home</a></li>
+					<li><a href="/addFood">Add Food</a></li>
+					<li class="active"><a href="/addIngredient">Add Ingredient</a></li>
+					<li><a href="/userInfo">User Info</a></li>
+					<li><a href="../index" th:href="@{../}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+<h2>Add Ingredient</h2>
+<div class="col-sm-s">
+	<form role="form" class="custom-centered" method="post" th:action="addIngredient" th:object="${ingredient}">
+		<div class="form-group">
+			<select th:field="*{id}">
+				<option th:each="p : ${foodList}" th:value="${p.id}"
+				th:text="${p.name}" />
+			</select> <br> 
+			<p>Name: <input type="text" th:field="*{name}" /><br></p>
+		
+			<input type="submit" class="btn btn-primary" value="Add Ingredient" />
+			<br>
+		</div>
+	</form>
+	</div>
+
+</body>
+</html>

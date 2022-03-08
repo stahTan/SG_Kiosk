@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Secure Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css"
+	th:href="@{/css/mycss.css}" />
+<style>
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 class="navbar-brand">Admin Home - Order List</h1>
+			</div>
+			<button class="navbar-toggle" data-toggle="collapse"
+				data-target=".navHeaderCollapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<div class="collapse navbar-collapse navHeaderCollapse">
+				<ul class="nav navbar-nav navbar-right text-center">
+					<li class="active"><a href="/secure/index">Admin Home</a></li>
+					<li><a href="/addFood">Add Food</a></li>
+					<li><a href="/addIngredient">Add Ingredient</a></li>
+					<li><a href="/userInfo">User Info</a></li>
+					<li><a href="../index" th:href="@{../}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<table class="center" th:if="${orderList != null and !orderList.empty}">
+		<tr>
+			<th>Menu Item</th>
+			<th>Ingredient List</th>
+			<th>User</th>
+			<th>Visit Date</th>
+			<th>Order Time</th>
+		</tr>
+		<tr th:each="s:${orderList}">
+			<td th:if="${s.foodOrder != null}" th:text="${s.foodOrder.name}"></td>
+			<td>
+				<table th:if="${!s.foodOrder.ingredientList.empty}">
+					<tr th:each="i:${s.foodOrder.ingredientList}">
+						<td th:text="${i.name}"></td>
+					</tr>
+				</table>
+			</td>
+			<td th:text="${s.name}"></td>
+			<td th:text="${s.visitDate}"></td>
+			<td th:text="${#temporals.format(s.visitTime, 'HH:mm')}"></td>
+		</tr>
+	</table>
+
+
+<br><br>
+<table><tr><td>
+	<div class="col-sm-s">
+		<form role="form" method="get" action="#" class="custom-centered"
+			th:action="@{/user_findByVisitDateBetween}"
+			th:object="${user}">
+			<h4>Filter by Date:</h4>
+			<div class="form-group">
+				<label for="firstname">Start Date</label> 
+				<input type="date" class="form-control" name="startDate"  /> 
+				<label for="firstname">End Date</label> 
+				<input type="date" class="form-control" name="endDate"  /> 
+				<input type="submit" class="btn btn-primary" value="Go!" /> <br>
+			</div>
+		</form>
+	</div>
+</td></tr></table>
+<br><br>
+	<table class="center" th:if="${foodList != null and !foodList.empty}">
+		<tr>
+			<th>Name</th>
+			<th>Price (SGD)</th>
+			<th>Food Type</th>
+			<th>Is Vegetarian</th>
+			<th>Ingredients</th>
+		</tr>
+		<tr th:each="s:${foodList}">
+			<td th:text="${s.name}"></td>
+			<td th:text="${s.price}"></td>
+			<td th:text="${s.foodType}"></td>
+			<td th:text="${s.vegetarian}"></td>
+			<td>
+				<table th:if="${!s.ingredientList.empty}">
+					<tr th:each="ingredient:${s.ingredientList}">
+						<td th:text="${ingredient.name}"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+</body>
+</html>

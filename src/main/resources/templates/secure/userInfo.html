@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>User Info</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css"
+	th:href="@{/css/mycss.css}" />
+<style>
+</style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 class="navbar-brand">User History</h1>
+			</div>
+			<button class="navbar-toggle" data-toggle="collapse"
+				data-target=".navHeaderCollapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<div class="collapse navbar-collapse navHeaderCollapse">
+				<ul class="nav navbar-nav navbar-right text-center">
+					<li><a href="/secure/index">Admin Home</a></li>
+					<li><a href="/addFood">Add Food</a></li>
+					<li class="active"><a href="/userInfo">User Info</a></li>
+					<li><a href="../index" th:href="@{../}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	
+
+	<table class="center" th:if="${userList != null and !userList.empty}">
+		<tr>
+			<th>User Name</th>
+			<th>Is Local</th>
+			<th>Language (spoken)</th>
+			<th>Visit Date</th>
+			<th>Order Time</th>
+		</tr>
+		<tr th:each="s:${userList}">
+			<td th:text="${s.name}"></td>
+			<td th:text="${s.isLocal}"></td>
+			<td th:text="${s.languageType}"></td>
+			<td th:text="${s.visitDate}"></td>
+			<td th:text="${#temporals.format(s.visitTime, 'HH:mm')}"></td>
+		</tr>
+	</table>
+
+
+</body>
+</html>

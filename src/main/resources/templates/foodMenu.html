@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Hawker Centre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css"
+	th:href="@{/css/mycss.css}" />
+<style>
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 class="navbar-brand">Hawker Centre Food Kiosk</h1>
+			</div>
+			<button class="navbar-toggle" data-toggle="collapse"
+				data-target=".navHeaderCollapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<div class="collapse navbar-collapse navHeaderCollapse">
+				<ul class="nav navbar-nav navbar-right text-center">
+					<li class="active"><a href="addUser" >Add Order</a></li>
+					<li><a href="/index" th:href="@{/}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br>
+	
+	<form role="form" class="custom-centered" method="get" action="addUser">
+	<div class="form-group">
+		<input type="submit" class="btn btn-primary" style="padding: 15px 32px; font-size: 20px"
+			name="login-submit" value="Add Order" />
+	</div>
+	</form>
+	<br><br>
+	<table class="center" th:if="${foodList != null and !foodList.empty}">
+		<tr>
+			<th>Menu Item</th>
+			<th>Price (SGD)</th>
+			<th>Food Type</th>
+			<th>Is Vegetarian</th>
+			<th>Ingredients</th>
+		</tr>
+		<tr th:each="s:${foodList}">
+			<td th:text="${s.name}"></td>
+			<td th:text="${s.price}"></td>
+			<td th:text="${s.foodType}"></td>
+			<td th:text="${s.vegetarian}"></td>
+			<td>
+				<table th:if="${!s.ingredientList.empty}">
+					<tr th:each="ingredient:${s.ingredientList}">
+						<td th:text="${ingredient.name}"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br>
+	
+	<br>
+	<h2>Order Queue</h2>
+	<table class="center" th:if="${orderList != null and !orderList.empty}">
+		<tr>
+			<th>Name</th>
+			<th>Order Item</th>
+			<th>Order Time</th>
+		</tr>
+		<tr th:each="s:${orderList}">
+			<td th:text="${s.name}"></td>
+			<td th:if="${s.foodOrder != null}" th:text="${s.foodOrder.name}"></td>
+			<td th:text="${#temporals.format(s.visitTime, 'HH:mm')}"></td>
+		</tr>
+	</table>
+	<br>
+
+	<br>
+	<table>
+		<tr>
+
+			<td>
+				<div class="col-sm-s">
+					<h4>Show Vegetarian options only</h4>
+					<form role="form" method="get" class="custom-centered"
+						th:action="@{/food_findByVegetarianTrue}" th:object="${food}">
+
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Go!" /> <br>
+						</div>
+					</form>
+				</div>
+			</td>
+			<td>
+				<div class="col-sm-s">
+					<h4>Filter by Food Type</h4>
+					<form role="form" method="get" th:action="@{/food_findByFoodType}" th:object="${food}"
+						class="custom-centered">
+						<div class="form-group">
+							<label for="firstname">Food Type</label>
+							<select class="form-control" name="foodType">
+								<option th:each="s:${foodType}" th:value="${s}" th:text="${s}" />
+							</select>
+							<input type="submit" class="btn btn-primary" value="Go!" /> <br>
+						</div>
+					</form>
+				</div>
+			</td>
+			<td>
+				<div class="col-sm-s">
+					<h4>Price Less Than</h4>
+					<form role="form" method="get" class="custom-centered"
+						th:action="@{/food_findByPriceLessThan}" th:object="${food}">
+						<div class="form-group">
+							<label for="firstname">Price</label>
+							
+							<input type="number" class="form-control" name="price" min=0 step="0.01"/>
+							<input type="submit" class="btn btn-primary" value="Go!" /> <br>
+						</div>
+					</form>
+				</div>
+			</td>
+			
+		</tr>
+		
+		
+	</table>
+
+</body>
+</html>
